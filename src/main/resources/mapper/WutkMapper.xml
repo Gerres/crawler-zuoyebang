@@ -15,4 +15,10 @@
                 #{content,jdbcType=LONGVARCHAR})
     </insert>
 
+    <select id="selectOneById" resultType="com.guangjin.crawler.entity.Wutk">
+        select * from `wutk_test` where (
+            content_id = #{id}
+                                            )
+    </select>
+
 </mapper>

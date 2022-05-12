@@ -71,14 +71,14 @@ public class TestMainPageProcessor implements PageProcessor {
         page.addTargetRequests(list);
     }
 
-    // 考卷真题页的爬取
+    // 考卷真题页问题和答案的爬取
     public void testCrawl(Page page) {
+        // 获取本套试卷的标题
         page.putField("title", page.getHtml().css(".h2_detail .txt", "text"));
+        // 获取本套书卷的问题内容
         page.putField("content", page.getHtml().css(".ksBody #examItemArea .bodyer_1 .bodyer_3 p span", "text").all());
-        String answerTitle = page.getHtml().css(".bodyer_5>span", "text").all().toString();
-        String answerContent = page.getHtml().css(".bodyer_5 div p span", "text").all().toString();
-        String answer = answerTitle + answerContent;
-        page.putField("answer", answer);
+        // 获取本套试卷的试题id和答案
+        page.putField("answer", page.getHtml().css(".bodyer_5>span, .bodyer_5 div p span", "text").all());
     }
 
     // 判断有没有下一页

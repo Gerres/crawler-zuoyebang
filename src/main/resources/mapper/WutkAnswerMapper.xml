@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.guangjin.crawler.mapper.WutkAnswerMapper">
+    
+    <insert id="addAnswerContent" parameterType="com.guangjin.crawler.entity.WutkAnswer">
+        insert into `wutk_answer`(
+                                  id, content_id, content)
+        values (#{id,jdbcType=BIGINT},
+                #{contentId,jdbcType=VARCHAR},
+                #{content,jdbcType=LONGVARCHAR})
+    </insert>
+</mapper>

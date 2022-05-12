@@ -4,7 +4,7 @@ package com.guangjin.crawler.task;
  * @author jbb~
  * @version 1.0
  */
-public class Common {
+public class URLCommon {
 
     // 高考真题(语文试卷)
     public static final String HighSchool_Real_Chinese_baseURL = "http://5utk.ks5u.com/main.aspx?mod=paper&ac=st&op=list&lm=&Years=&Grade=&bankid=1&rn=10&q3=1&page=";
@@ -18,7 +18,7 @@ public class Common {
 
     // 拼接高考真题(语文试卷)页码
     public static void concatHighSchool_Real_Chinese_baseURL(String pageNum) {
-        Common.HighSchool_Real_Chinese_URL = Common.HighSchool_Real_Chinese_baseURL.concat(pageNum);
+        URLCommon.HighSchool_Real_Chinese_URL = URLCommon.HighSchool_Real_Chinese_baseURL.concat(pageNum);
     }
 
 }
