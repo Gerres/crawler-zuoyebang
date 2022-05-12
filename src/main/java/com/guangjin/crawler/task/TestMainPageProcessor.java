@@ -21,6 +21,29 @@ public class TestMainPageProcessor implements PageProcessor {
     @Override
     public void process(Page page) {
 
+        // FINISHED: 1、自动判断有没有下一页，爬取所有页数据
+        // TODO: 2、答案爬取后对其进行数据清洗与整理，根据问题分配对应的答案
+        // TODO: 3、试卷的去重(可以参考使用布隆过滤器)
+
+        // 判断有没有下一页(是否添加到队列中)
+        if (hasNext(page)) {
+
+            // 获取url来拼接
+            String href = page.getHtml().css(".pg strong + a", "href").toString();
+            if (href != null) {
+                String url = "http://5utk.ks5u.com/" + href;
+                page.addTargetRequest(url);
+                System.out.println("url：" + url);
+            }
+
+            // 获取pageNum来拼接
+//            String pageNum = page.getHtml().css(".pg strong + a", "text").toString();
+//            System.out.println("--------pageNum：" + pageNum);
+//            Common.concatHighSchool_Real_Chinese_baseURL(pageNum);
+//            page.addTargetRequest(Common.HighSchool_Real_Chinese_URL);
+//            System.out.println("HighSchool_Real_Chinese_URL：" + Common.HighSchool_Real_Chinese_URL);
+        }
+
         if (page.getUrl().toString().contains("main.aspx")) {
             listCrawl(page);
         } else if (page.getUrl().toString().contains("paperList.aspx")) {
@@ -56,5 +79,11 @@ public class TestMainPageProcessor implements PageProcessor {
         String answerContent = page.getHtml().css(".bodyer_5 div p span", "text").all().toString();
         String answer = answerTitle + answerContent;
         page.putField("answer", answer);
+    }
+
+    // 判断有没有下一页
+    public boolean hasNext(Page page) {
+        String next = page.getHtml().css(".pg .nxt").all().toString();
+        return next != null;
     }
 }

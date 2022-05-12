@@ -3,6 +3,7 @@ package com.guangjin.crawler.task;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
+import us.codecraft.webmagic.Page;
 import us.codecraft.webmagic.Spider;
 
 import javax.annotation.Resource;
@@ -33,8 +34,7 @@ public class TestMainTask {
 
             try {
                 Spider.create(testMainPageProcessor)
-                        // 从https://www.zhihu.com/explore开始抓
-                        .addUrl("http://5utk.ks5u.com/main.aspx?mod=paper&ac=st&op=list")
+                        .addUrl(Common.HighSchool_Real_Chinese_URL)
                         // 抓取到的数据存数据库
                         .addPipeline(testMainPipeline)
                         // 开启2个线程抓取
