@@ -1,10 +1,13 @@
 package com.guangjin.crawler.task;
 
+import com.guangjin.crawler.service.WutkPageService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import us.codecraft.webmagic.Page;
 import us.codecraft.webmagic.Site;
 import us.codecraft.webmagic.processor.PageProcessor;
 
+import javax.annotation.Resource;
 import java.util.HashMap;
 import java.util.List;
 
@@ -18,6 +21,9 @@ public class TestMainPageProcessor implements PageProcessor {
     private Site site = Site.me().setRetryTimes(3).setSleepTime(1000);
     public static final List<String> list = null;
 
+    @Autowired
+    private WutkPageService wutkPageService;
+
     @Override
     public void process(Page page) {
 
@@ -28,26 +34,21 @@ public class TestMainPageProcessor implements PageProcessor {
         // 判断有没有下一页(是否添加到队列中)
         if (hasNext(page)) {
 
-            // 获取url来拼接
+            // 获取试卷页面url来拼接
             String href = page.getHtml().css(".pg strong + a", "href").toString();
             if (href != null) {
                 String url = "http://5utk.ks5u.com/" + href;
+                // 将待请求的url加入队列
                 page.addTargetRequest(url);
                 System.out.println("url：" + url);
             }
 
-            // 获取pageNum来拼接
-//            String pageNum = page.getHtml().css(".pg strong + a", "text").toString();
-//            System.out.println("--------pageNum：" + pageNum);
-//            Common.concatHighSchool_Real_Chinese_baseURL(pageNum);
-//            page.addTargetRequest(Common.HighSchool_Real_Chinese_URL);
-//            System.out.println("HighSchool_Real_Chinese_URL：" + Common.HighSchool_Real_Chinese_URL);
         }
 
         if (page.getUrl().toString().contains("main.aspx")) {
-            listCrawl(page);
+            wutkPageService.listCrawl(page);
         } else if (page.getUrl().toString().contains("paperList.aspx")) {
-            testCrawl(page);
+            wutkPageService.testCrawl(page);
         } else {
             System.out.println("----------爬取失败(未知错误)----------");
         }
@@ -59,27 +60,27 @@ public class TestMainPageProcessor implements PageProcessor {
         return site;
     }
 
-    // 列表页的爬取
-    public void listCrawl(Page page) {
-        List<String> list = page.getHtml().$(".qt-info-title").$("a", "href").all();
-        // for循环给地址加上url
-        for (int i = 0; i < list.size(); i++) {
-            String URL = "http://5utk.ks5u.com/" + list.get(i);
-            list.set(i, URL);
-        }
-        // 将待爬取的详情页url添加到队列
-        page.addTargetRequests(list);
-    }
-
-    // 考卷真题页问题和答案的爬取
-    public void testCrawl(Page page) {
-        // 获取本套试卷的标题
-        page.putField("title", page.getHtml().css(".h2_detail .txt", "text"));
-        // 获取本套书卷的问题内容
-        page.putField("content", page.getHtml().css(".ksBody #examItemArea .bodyer_1 .bodyer_3 p span", "text").all());
-        // 获取本套试卷的试题id和答案
-        page.putField("answer", page.getHtml().css(".bodyer_5>span, .bodyer_5 div p span", "text").all());
-    }
+//    // 列表页的爬取
+//    public void listCrawl(Page page) {
+//        List<String> list = page.getHtml().$(".qt-info-title").$("a", "href").all();
+//        // for循环给地址加上url
+//        for (int i = 0; i < list.size(); i++) {
+//            String URL = "http://5utk.ks5u.com/" + list.get(i);
+//            list.set(i, URL);
+//        }
+//        // 将待爬取的详情页url添加到队列
+//        page.addTargetRequests(list);
+//    }
+//
+//    // 考卷真题页问题和答案的爬取
+//    public void testCrawl(Page page) {
+//        // 获取本套试卷的标题
+//        page.putField("title", page.getHtml().css(".h2_detail .txt", "text"));
+//        // 获取本套书卷的问题内容
+//        page.putField("content", page.getHtml().css(".ksBody #examItemArea .bodyer_1 .bodyer_3 p span", "text").all());
+//        // 获取本套试卷的试题id和答案
+//        page.putField("answer", page.getHtml().css(".bodyer_5>span, .bodyer_5 div p span", "text").all());
+//    }
 
     // 判断有没有下一页
     public boolean hasNext(Page page) {

@@ -46,34 +46,30 @@ public class TestMainPipeline implements Pipeline {
 
         String uuid = UUID.randomUUID().toString();
 
-        // 将试卷问题存储到数据库
-        if (title != null && content != null) {
-            Wutk wutk = new Wutk();
-            wutk.setContentId(uuid);
-            wutk.setTitle(title.toString());
-            wutk.setContent(content.toString());
-            wutk.setReleaseDate(new LocalDateTime().toDate());
-            int result = wutkMapper.addTestContent(wutk);
-            if (result == 0) {
-                System.out.println("!-----> 试卷考题保存失败");
-            }
-        }
-
-        // 将答案保存到数据库
-        if (answer != null) {
-            // TODO: 2022/5/12 为id添加外键
-            WutkAnswer wutkAnswer = new WutkAnswer();
-            wutkAnswer.setContentId(uuid);
-            wutkAnswer.setContent(answer.toString());
-            int result = wutkAnswerMapper.addAnswerContent(wutkAnswer);
-            if (result == 0) {
-                System.out.println("!-----> 试卷答案保存失败");
-            }
-        }
+//        // 将试卷问题存储到数据库
+//        if (title != null && content != null) {
+//            Wutk wutk = new Wutk();
+//            wutk.setContentId(uuid);
+//            wutk.setTitle(title.toString());
+//            wutk.setContent(content.toString());
+//            wutk.setReleaseDate(new LocalDateTime().toDate());
+//            int result = wutkMapper.addTestContent(wutk);
+//            if (result == 0) {
+//                System.out.println("!-----> 试卷考题保存失败");
+//            }
+//        }
+//
+//        // 将答案保存到数据库
+//        if (answer != null) {
+//            // TODO: 2022/5/12 为id添加外键
+//            WutkAnswer wutkAnswer = new WutkAnswer();
+//            wutkAnswer.setContentId(uuid);
+//            wutkAnswer.setContent(answer.toString());
+//            int result = wutkAnswerMapper.addAnswerContent(wutkAnswer);
+//            if (result == 0) {
+//                System.out.println("!-----> 试卷答案保存失败");
+//            }
+//        }
     }
 
-    // 清洗答案
-//    public List<String> rinseAnswer() {
-        // TODO: 2022/5/12 根据题号标注答案
-//    }
 }
